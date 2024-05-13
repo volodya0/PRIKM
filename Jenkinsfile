@@ -1,33 +1,39 @@
 pipeline {
- agent any
+  agent any
 
- stages {
-  stage('Start') {
-   steps {
-    echo 'Lab_1: nginx/custom'
-   }
-  }
+  stages {
+    stage('Start') {
+      steps {
+        echo 'Lab_2: started by GitHub'
+      }
+    }
 
-  stage('Build nginx/custom') {
-   steps {
-    sh 'docker build -t nginx/custom:latest .'
-   }
-  }
+    stage('Image build') {
+      steps {
+        sh "docker build -t prikm:latest ."
+        sh "docker tag prikm yuziukvolodymyr/prikm:latest"
+        sh "docker tag prikm yuziukvolodymyr/prikm:$BUILD_NUMBER"
+      }
+    }
 
-  stage('Test nginx/custom') {
-   steps {
-    echo 'Pass'
-   }
-  }
+    stage('Push to registry') {
+      steps {
+        withDockerRegistry([ credentialsId: "dockerhub_token", url: "" ])
+        {
+          sh "docker push yuziukvolodymyr/prikm:latest"
+          sh "docker push yuziukvolodymyr/prikm:$BUILD_NUMBER"
+        }
+      }
+    }
 
-  stage('Deploy nginx/custom'){
-   steps{
-    sh "docker stop \$(docker ps -q) || true"
-    sh "docker container prune --force"
-    sh "docker image prune --force"
-    //sh "docker rmi \$(docker images -q) || true"
-    sh "docker run -d -p 80:80 nginx/custom:latest"
-   }
-  }
- }
+    stage('Deploy image'){
+      steps{
+        sh "docker stop \$(docker ps -q) || true"
+        sh "docker container prune --force"
+        sh "docker image prune --force"
+        //sh "docker rmi \$(docker images -q) || true"
+        sh "docker run -d -p 80:80 yuziukvolodymyr/prikm"
+      }
+    }
+  }  
 }
