@@ -36,10 +36,13 @@ pipeline {
       }
     }
   }  
+post{
+success{
+script{
+// Send Telegram notification on success
+telegramSend message: "Job Name: ${env.JOB_NAME}\n Branch: ${env.GIT_BRANCH}\nBuild #${env.BUILD_NUMBER}: ${currentBuild.currentResult}"
+}
+}
+}
 
-  post {
-      always {
-          emailext body: 'A Test EMail', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], to: 'volodymyr.yuziuk.mitpa.2023@lpnu.ua, volodauzuk02@gmail.com', subject: 'Test'
-      }
-  }
 }
