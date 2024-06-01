@@ -26,6 +26,6 @@ scrape_configs:
  
   - job_name: 'jenkins'
     metrics_path: '/prometheus'
-    scheme: 'https'
+    # scheme: 'https'
     static_configs:
       - targets: ['sturdy-giggle-q6wrxjrgqqgh46gg-8080.app.github.dev']
