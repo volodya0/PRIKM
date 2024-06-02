@@ -30,7 +30,7 @@
    </userRemoteConfigs>
    <branches>
     <hudson.plugins.git.BranchSpec>
-     <name>*/Lab5</name>
+     <name>*/Lab7</name>
     </hudson.plugins.git.BranchSpec>
    </branches>
    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
