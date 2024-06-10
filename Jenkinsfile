@@ -12,6 +12,12 @@ pipeline {
       }
     }
 
+    stage('Clone Repository') {
+        steps {
+            git branch: 'JenkinsIntegration2', url: 'https://github.com/volodya0/tetris'
+        }
+    }
+
     stage('Image build') {
       steps {
         sh "docker build -t prikm:latest ."
