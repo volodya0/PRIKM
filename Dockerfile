@@ -1,8 +1,3 @@
-# FROM nginx:latest
-# RUN rm -rf /usr/share/nginx/html/index.html
-# COPY ./. /usr/share/nginx/html/
-# #
-
 # Step 1: Build the React application
 # Use an official Node.js image to build the application
 FROM node:14 AS build
@@ -26,11 +21,14 @@ RUN npm run build
 # Use an official Nginx image to serve the built files
 FROM nginx:alpine
 
+# Remove the default Nginx configuration
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copy the built files from the build stage to the Nginx HTML directory
 COPY --from=build /app/build /usr/share/nginx/html
-
-# Copy custom Nginx configuration (optional)
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80 to be able to access the web application
 EXPOSE 80
