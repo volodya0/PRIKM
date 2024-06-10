@@ -59,7 +59,7 @@ pipeline {
         sh "docker container prune --force"
         sh "docker image prune --force"
         //sh "docker rmi \$(docker images -q) || true"
-        sh "docker run -d -p 8000:80 $DOCKER_IMAGE"
+        sh "docker run -d -p 8001:80 $DOCKER_IMAGE"
       }
       // post{
       //   failure {
